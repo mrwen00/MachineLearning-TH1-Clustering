@@ -37,6 +37,9 @@ plt.subplot(232)
 plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=y_pred)
 plt.title("Kmean")
 
+print "Kmean percent"
+print metrics.adjusted_mutual_info_score(digits.target, y_pred)  
+
 # =================================================================
 # spectral
 similar_data = np.corrcoef(data)
@@ -48,6 +51,8 @@ plt.subplot(233)
 plt.scatter(reduced_data[:,0], reduced_data[:, 1], c=y)
 plt.title("Spectral")
 
+print "Spectral percent"
+print metrics.adjusted_mutual_info_score(digits.target, y)  
 
 # =================================================================
 # dbscan
@@ -57,6 +62,9 @@ plt.subplot(234)
 plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=dbscan)
 plt.title('DBSCAN')
 
+print "DBSCAN percent"
+print metrics.adjusted_mutual_info_score(digits.target, dbscan)  
+
 # =================================================================
 # agglomerative
 
@@ -65,5 +73,7 @@ plt.subplot(235)
 plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=agglo)
 plt.title('Agglomerative')
 
+print "Agglo percent"
+print metrics.adjusted_mutual_info_score(digits.target, agglo)  
 
 plt.show()
