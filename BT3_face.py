@@ -2,6 +2,14 @@ from time import time
 import numpy as np
 import matplotlib.pyplot as plt
 
+from sklearn import metrics, cluster
+from sklearn.cluster import KMeans
+from sklearn.cluster import DBSCAN
+from sklearn.cluster import AgglomerativeClustering
+from sklearn.datasets import load_digits
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import scale
+
 from numpy.random import RandomState
 from sklearn import metrics, cluster
 from sklearn.datasets import fetch_lfw_people
@@ -32,66 +40,53 @@ n_points = 8 * radius
 
 lbp = local_binary_pattern(data, n_points, radius)
 
-# print len(lbp)
-# print len(lbp[0])
-# print lbp
-# print data
+# =================================================================
+
+np.random.seed(42)
+
+originalData = PCA(n_components=2).fit_transform(data)
+
+plt.subplot(231)
+plt.scatter(originalData[:, 0], originalData[:, 1], c=dataset.target)
+plt.title('Bai Tap 3 - True Result')
+
 
 # #############################################################################
-# Visualize the results on PCA-reduced data
+# Visualize the results on PCA-reduced data Kmean
 
-reduced_data = PCA(n_components=2).fit_transform(lbp)
+y_pred = KMeans(n_clusters=10).fit_predict(lbp)
 
 
-# =================================================================
-# VIsualize Kmean
-
-kmeans = KMeans(init='k-means++', n_clusters=n_clusters)
-y_pred = kmeans.fit_predict(reduced_data)
-
-plt.subplot(221)
-plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=y_pred)
-plt.title("Face dataset clustering by Kmean")
+plt.subplot(232)
+plt.scatter(originalData[:, 0], originalData[:, 1], c=y_pred)
+plt.title("Kmean")
 
 # =================================================================
-# spectral clustering
-
-similar_data = np.corrcoef(lbp)
-print similar_data
-
-y = cluster.SpectralClustering(
-        n_clusters=n_clusters, eigen_solver='arpack',
-        affinity="nearest_neighbors").fit_predict(similar_data)
-plt.subplot(222)
-plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=y)
-plt.title("Face dataset clustering by Spectral")
-
-
-# =================================================================
-# aggro
+# spectral
 similar_data = np.corrcoef(lbp)
 
-connectivity = kneighbors_graph(
-    lbp, n_neighbors=10, include_self=False)
-# make connectivity symmetric
-connectivity = 0.5 * (connectivity + connectivity.T)
+y = cluster.SpectralClustering(n_clusters=n_clusters, eigen_solver='arpack', affinity='nearest_neighbors').fit_predict(similar_data)
 
-y = cluster.AgglomerativeClustering(
-        linkage="average", affinity="cityblock",
-        n_clusters=n_clusters, connectivity=connectivity).fit_predict(similar_data)
-plt.subplot(223)
-plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=y)
-plt.title("Face dataset clustering by Aggro")
+plt.subplot(233)
+plt.scatter(originalData[:,0], originalData[:, 1], c=y)
+plt.title("Spectral")
+
 
 # =================================================================
 # dbscan
 
-similar_data = np.corrcoef(lbp)
-print similar_data
+dbscan = DBSCAN(eps=17.6, min_samples=1).fit_predict(lbp)
+plt.subplot(234)
+plt.scatter(originalData[:, 0], originalData[:, 1], c=dbscan)
+plt.title('DBSCAN')
 
-y = cluster.DBSCAN(eps=0.355).fit_predict(similar_data)
-plt.subplot(224)
-plt.scatter(reduced_data[:, 0], reduced_data[:, 1], c=y)
-plt.title("Face dataset clustering by DBSCAN")
+# =================================================================
+# agglomerative
+
+agglo = AgglomerativeClustering(n_clusters=n_clusters).fit_predict(lbp)
+plt.subplot(235)
+plt.scatter(originalData[:, 0], originalData[:, 1], c=agglo)
+plt.title('Agglomerative')
+
 
 plt.show()

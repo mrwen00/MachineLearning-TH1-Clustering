@@ -15,11 +15,6 @@ n_samples = 100
 random_state = randint(1, 1000)
 X, y = make_blobs(n_samples=n_samples,centers = 2, random_state=random_state)
 
-# plt.subplot(221)
-# plt.scatter(X[:, 0], X[:, 1], c=y)
-# plt.title("Original")
-
-# Incorrect number of clusters
 y_pred = KMeans(n_clusters=2, random_state=random_state).fit_predict(X)
 
 plt.subplot(221)
