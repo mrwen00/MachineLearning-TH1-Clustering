@@ -1,3 +1,7 @@
+# 14521097
+# Trieu Trang Vinh
+# BT2: Chon tap du lieu hand written digit.
+
 from time import time
 import numpy as np
 import matplotlib.pyplot as plt

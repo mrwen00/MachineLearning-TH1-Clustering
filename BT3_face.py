@@ -1,3 +1,7 @@
+# 14521097
+# Trieu Trang Vinh
+# BT3 Chon tap du lieu Face, rut trich dac trung LBP.
+
 from time import time
 import numpy as np
 import matplotlib.pyplot as plt

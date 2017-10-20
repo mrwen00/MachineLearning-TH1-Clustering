@@ -1,3 +1,7 @@
+# 14521097
+# Trieu Trang Vinh
+# BT4 Tu chon tap du lieu, dung phuong phap rut trich tien tien. Su dung HoG
+
 from time import time
 import numpy as np
 import matplotlib.pyplot as plt
